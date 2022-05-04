@@ -18,33 +18,15 @@ Druid хранит данные в источниках данных, котор
 После чего мы можем открыть Druid console по адресу http://localhost:8888
 Выглидит это так:
 ![1](https://github.com/PavelSubbotin/Apache_Druid_Overview/blob/main/pictures/1.png)
+После добавления рекомендованного датасета нажимаем на значок настроек и выбираем Query with SQL:
+![4](https://github.com/PavelSubbotin/Apache_Druid_Overview/blob/main/pictures/4.png)
+Примеры запросов: 
+![2](https://github.com/PavelSubbotin/Apache_Druid_Overview/blob/main/pictures/4.png)
+![3](https://github.com/PavelSubbotin/Apache_Druid_Overview/blob/main/pictures/4.png)
+Очень подробно весь процесс настройки и запуска запросов описан в [официальной докусентации](https://druid.apache.org/docs/latest/design/index.html)
+Для написания запросов используются ["native queries"](https://druid.apache.org/docs/latest/querying/querying.html) на основе JSON и [https://druid.apache.org/docs/latest/querying/sql.html](Druid SQL), преобназующий SQL запросы с небольшими ограничениями в "native queries"
+Демобаза с запросами хранится на гитхабе [вот здесь](https://github.com/apache/druid/tree/master/examples) и помимо запросов содержит множество примеров различных настроек и тренировочных датасетов
 
-
-Чтобы запустить Sedna сервер нужно зайти в папку INSTALL_DIR/bin и выполнить:  
-``.\se_gov.exe``  
-Для остановки:  
-``.\se_stop.exe``  
-Чтобы создать базу данных нужно выполнить:  
-``.\se_cdb.exe testdb``  
-Чтобы запустить базу данных нужно выполнить команду:  
-``.\se_sm testdb``  
-Для остановки:  
-``.\se_smsd testdb``  
-Язык запросов СУБД - XQuery 1.0(w3.org/TR/2010/REC-xquery-20101214/). Давайте заполним датасет данными. Чтобы добавить существующий заполненный документ используется следующая команда:  
-``LOAD "path_to_file" "document_name"``  
-Я буду использовать готовую [демобазу](auction.xml), которая есть в примерах. 
-Если же мы хотим создать пустой документ и заполнить его и обновлять данные, то используется следующий синтаксис:  
-``CREATE DOCUMENT "hospital"& // создать документ hospital``  
-``UPDATE INSERT <root><peace/></root> INTO fn:doc("hospital")& \\ кладём выражение ``  
-``UPDATE INSERT <warning>High Blood Pressure!</warning> INTO fn:doc("hospital")/root/peace``  
-Давайте попробуем сделать запрос к базе. Например, давайте посчитаем количество товаров, проданных по цене больше 39.  
-``count(for $i in doc("auction")/site/closed_auctions/closed_auction``  
-``        where  $i/price/text() >= 40``   
-``        return $i/price)``  
-Как мы видим, мы проходим по всем проданным товарам в первой строчке, во второй отбираем сколько стоят больше 39 и в третьей строчке возвращаем нужное.
-Давайте теперь посчитаем, сколько товаров представлено в данном документе?  
-``for    $b in doc("auction")/site/regions``  
-``return count ($b//item)``
 
 ## Распределение файлов БД по разным носителям?
 На официальном сайте информации по этому вопросу не нашёл, но нашёл презентацию ИСПа по memory managment in Sedna.(https://www.slideshare.net/shcheklein/sedna-xml-database-memory-management). Сайт лагучий, презентация иногда не подгружается.
