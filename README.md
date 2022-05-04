@@ -21,28 +21,18 @@ Druid хранит данные в источниках данных, котор
 После добавления рекомендованного датасета нажимаем на значок настроек и выбираем Query with SQL:
 ![4](https://github.com/PavelSubbotin/Apache_Druid_Overview/blob/main/pictures/4.png)
 Примеры запросов: 
-![2](https://github.com/PavelSubbotin/Apache_Druid_Overview/blob/main/pictures/4.png)
-![3](https://github.com/PavelSubbotin/Apache_Druid_Overview/blob/main/pictures/4.png)
+![2](https://github.com/PavelSubbotin/Apache_Druid_Overview/blob/main/pictures/2.png)
+![3](https://github.com/PavelSubbotin/Apache_Druid_Overview/blob/main/pictures/3.png)
 Очень подробно весь процесс настройки и запуска запросов описан в [официальной докусентации](https://druid.apache.org/docs/latest/design/index.html)
-Для написания запросов используются ["native queries"](https://druid.apache.org/docs/latest/querying/querying.html) на основе JSON и [https://druid.apache.org/docs/latest/querying/sql.html](Druid SQL), преобназующий SQL запросы с небольшими ограничениями в "native queries"
+Для написания запросов используются ["native queries"](https://druid.apache.org/docs/latest/querying/querying.html) на основе JSON и [Druid SQL](https://druid.apache.org/docs/latest/querying/sql.html), преобназующий SQL запросы с небольшими ограничениями в "native queries"
 Демобаза с запросами хранится на гитхабе [вот здесь](https://github.com/apache/druid/tree/master/examples) и помимо запросов содержит множество примеров различных настроек и тренировочных датасетов
 
 
 ## Распределение файлов БД по разным носителям?
-На официальном сайте информации по этому вопросу не нашёл, но нашёл презентацию ИСПа по memory managment in Sedna.(https://www.slideshare.net/shcheklein/sedna-xml-database-memory-management). Сайт лагучий, презентация иногда не подгружается.
-![mem man](https://i.imgur.com/sMDrYA8.png)
-![mem man2](https://i.imgur.com/z1lpW8Z.png)
-
-Из презентации ясно, что DAS указатели ускорили Sedna на 1,5%.  
-Также интерсено обратить внимание на то, как хранится документ, благодаря ообой структуре хранения, переход между элементами осуществляется инкрементом указателя.
-
-![storage example](https://i.imgur.com/lwMQqco.png)  
-А ещё общие идеи управлением памятью заключаются в том, что, во-первых, содержимое блоков базы данных не изменяется при перемещении блока из внешней в основную память. Во-вторых, для представления связей между узлами XML -документа почти всегда используются прямые указатели, которые можно использовать для перехода от одного узла к другому сразу после перемещения блока базы данных в основную память. При этом потенциальный размер базы данных не ограничивается.  
-Сами файлы баз данных хранятся в *SEDNA_INSTALL/data* данные базы данных, хранящиеся в подкаталогах с именем ``<db_name>_files``, где ``<db_name>`` это имя соответствующей базы данных  
+Druid поддерживает двухуровневый механизм распределения данных. Так как данный проект затоочен под быструю онлайн обработку, в первую очередь данные делятся по времени на time chunks, внутри чанков так же используется вторичное распределение, для увеличения перфоманса авторы так же советуют разделить данные по "натуральному" измерению, которое часто используется в запросах. [Официальная документация про это](https://druid.apache.org/docs/latest/ingestion/partitioning.html)
 
 ## На каком языке/ах программирования написана СУБД?
-Судя по гиту большая часть проекта написана на **C++/C**, парсер написан на **Yacc**. Также немного, но использовался **Scheme** и **Java**.
-![languages](https://i.imgur.com/HdNpoH8.png)
+Проект целиком написан на Java, небольшая часть кода, которая, как я понял, связана с визуальным отображением написана на TypeScript
 
 ## Какие типы индексов поддерживаются в БД? Приведите пример создания индексов.
 Sedna поддерживает value indexes для индексации содержимого элементов XML и значений атрибутов. Реализуются на B+ tree или BST(Block String Trie).  
