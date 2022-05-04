@@ -26,7 +26,7 @@ Druid хранит данные в источниках данных, котор
 Очень подробно весь процесс настройки и запуска запросов описан в [официальной докусентации](https://druid.apache.org/docs/latest/design/index.html)
 Для написания запросов используются ["native queries"](https://druid.apache.org/docs/latest/querying/querying.html) на основе JSON и [Druid SQL](https://druid.apache.org/docs/latest/querying/sql.html), преобназующий SQL запросы с небольшими ограничениями в "native queries"
 Схема SQL подобного запроса:
-![7](https://github.com/PavelSubbotin/Apache_Druid_Overview/blob/main/pictures/4.png)
+![7](https://github.com/PavelSubbotin/Apache_Druid_Overview/blob/main/pictures/7.png)
 Демобаза с запросами хранится на гитхабе [вот здесь](https://github.com/apache/druid/tree/master/examples) и помимо запросов содержит множество примеров различных настроек и тренировочных датасетов
 
 
